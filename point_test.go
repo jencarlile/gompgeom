@@ -1,4 +1,4 @@
-package core
+package gompgeom
 
 import (
 	. "launchpad.net/gocheck"
@@ -14,12 +14,12 @@ type PointSuite struct{}
 var _ = Suite(&PointSuite{})
 
 func (s *PointSuite) TestToRight(c *C) {
-	p1 := &Point2{0, 0}
-	p2 := &Point2{10, 0}
+	p1 := &Point{0, 0}
+	p2 := &Point{10, 0}
 
-	pLeft := &Point2{12, 3}
-	pRight := &Point2{11, -1}
-	pInline := &Point2{12, 0}
+	pLeft := &Point{12, 3}
+	pRight := &Point{11, -1}
+	pInline := &Point{12, 0}
 
 	c.Check(ToRight(p1, p2, pLeft), Equals, false)
 	c.Check(ToRight(p1, p2, pRight), Equals, true)
@@ -27,7 +27,7 @@ func (s *PointSuite) TestToRight(c *C) {
 }
 
 func (s *PointSuite) TestSortByX(c *C) {
-	pts := []*Point2{
+	pts := []*Point{
 		{10, 5},
 		{2, 6},
 		{3, 4},
@@ -36,7 +36,7 @@ func (s *PointSuite) TestSortByX(c *C) {
 	}
 
 	sort.Sort(ByX{pts})
-	expected := []*Point2{
+	expected := []*Point{
 		{2, 6},
 		{3, 4},
 		{7, 7},
@@ -47,7 +47,7 @@ func (s *PointSuite) TestSortByX(c *C) {
 }
 
 func (s *PointSuite) TestConvexHull(c *C) {
-	pts := []*Point2{
+	pts := []*Point{
 		{8, 3},
 		{5, 2},
 		{4, 5},
@@ -56,7 +56,7 @@ func (s *PointSuite) TestConvexHull(c *C) {
 		{0, 0},
 		{3, -3},
 	}
-	expected := Polygon2{
+	expected := Polygon{
 		{0, 0},
 		{1, 3},
 		{4, 5},
@@ -65,13 +65,13 @@ func (s *PointSuite) TestConvexHull(c *C) {
 	}
 	c.Check(ConvexHull(pts), DeepEquals, expected)
 
-	pts = []*Point2{
+	pts = []*Point{
 		{0, 0},
 		{5, 5},
 		{10, 0},
 		{4, -4},
 	}
-	expected = Polygon2{
+	expected = Polygon{
 		{0, 0},
 		{5, 5},
 		{10, 0},
@@ -79,13 +79,13 @@ func (s *PointSuite) TestConvexHull(c *C) {
 	}
 	c.Check(ConvexHull(pts), DeepEquals, expected)
 
-	pts = []*Point2{
+	pts = []*Point{
 		{0, 0},
 		{5, 5},
 		{10, 0},
 		{5, -4},
 	}
-	expected = Polygon2{
+	expected = Polygon{
 		{0, 0},
 		{5, 5},
 		{10, 0},
@@ -93,23 +93,23 @@ func (s *PointSuite) TestConvexHull(c *C) {
 	}
 	c.Check(ConvexHull(pts), DeepEquals, expected)
 
-	pts = []*Point2{
+	pts = []*Point{
 		{0, 0},
 		{5, 5},
 		{8, 2},
 		{10, 0},
 	}
-	expected = Polygon2{
+	expected = Polygon{
 		{0, 0},
 		{5, 5},
 		{10, 0},
 	}
 	c.Check(ConvexHull(pts), DeepEquals, expected)
 
-	pts = []*Point2{
+	pts = []*Point{
 		{0, 0},
 		{10, 0},
 	}
-	expected = Polygon2{}
+	expected = Polygon{}
 	c.Check(ConvexHull(pts), DeepEquals, expected)
 }
